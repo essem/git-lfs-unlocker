@@ -1,0 +1,13 @@
+{
+  "name": "electron-boilerplate",
+  "version": "1.0.0",
+  "description": "Electron boilerplate",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/essem/electron-boilerplate",
+  "devDependencies": {
+    "electron": "^2.0.0"
+  }
+}
