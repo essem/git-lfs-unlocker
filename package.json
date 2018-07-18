@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Electron boilerplate",
   "main": "main.js",
+  "homepage": ".",
   "scripts": {
-    "start": "electron .",
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject"
+    "start": "npm run build && NODE_ENV=production npm run electron",
+    "dev": "concurrently \"npm:react\" \"sleep 2 && npm run electron\"",
+    "electron": "electron .",
+    "react": "BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "repository": "https://github.com/essem/electron-boilerplate",
   "dependencies": {
@@ -17,6 +20,7 @@
     "react-scripts": "1.1.4"
   },
   "devDependencies": {
+    "concurrently": "^3.6.0",
     "electron": "^2.0.0"
   }
 }
