@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,9 +22,8 @@ const styles = {
   },
 };
 
-class App extends Component {
+class App extends React.Component {
   render() {
-    console.log(this.props);
     const { classes } = this.props;
     return (
       <div className={classes.root}>
@@ -46,7 +45,10 @@ class App extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div className={classes.content} />
+        <div className={classes.content}>
+          We are using Node.js {process.versions.node}, Chromium{' '}
+          {process.versions.chrome}, and Electron {process.versions.electron}.
+        </div>
       </div>
     );
   }
