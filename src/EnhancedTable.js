@@ -97,6 +97,10 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: newSelected });
   };
 
+  handleClickUnlock = () => {
+    this.props.onClickUnlock(this.state.selected);
+  };
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
@@ -105,7 +109,11 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar title={workDir} numSelected={selected.length} />
+        <EnhancedTableToolbar
+          title={workDir}
+          numSelected={selected.length}
+          onClickUnlock={this.handleClickUnlock}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead

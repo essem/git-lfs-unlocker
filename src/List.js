@@ -4,6 +4,12 @@ import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import EnhancedTable from './EnhancedTable';
 import path from 'path';
 import util from 'util';
@@ -41,6 +47,7 @@ class List extends React.Component {
       gitUserName: '',
       showOtherPeoples: false,
       workDir: path.resolve(this.props.workDir),
+      err: null,
     };
 
     this.refreshData(this.state.workDir, this.state.showOtherPeoples);
@@ -70,7 +77,7 @@ class List extends React.Component {
         data,
       });
     } catch (err) {
-      console.error(err);
+      this.setState({ err: err.toString() });
     }
   }
 
@@ -81,6 +88,26 @@ class List extends React.Component {
       showOtherPeoples,
     });
     this.refreshData(this.state.workDir, showOtherPeoples);
+  };
+
+  handleClickUnlock = selected => {
+    (async () => {
+      try {
+        for (const id of selected) {
+          await execAsync(`git lfs unlock --id=${id}`, {
+            cwd: this.state.workDir,
+          });
+        }
+        this.setState({ data: null });
+        this.refreshData(this.state.workDir, this.state.showOtherPeoples);
+      } catch (err) {
+        this.setState({ err: err.toString() });
+      }
+    })();
+  };
+
+  handleClose = () => {
+    this.setState({ err: null });
   };
 
   renderTable() {
@@ -94,13 +121,44 @@ class List extends React.Component {
         </div>
       );
     }
+
     return (
       <EnhancedTable
         workDir={workDir}
         columnData={columnData}
         data={data}
         defaultOrderBy="path"
+        onClickUnlock={this.handleClickUnlock}
       />
+    );
+  }
+
+  renderError() {
+    if (this.state.err === null) {
+      return '';
+    }
+
+    return (
+      <Dialog
+        open={true}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'Failed to unlock file(s)'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {this.state.err}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary" autoFocus>
+            CLOSE
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 
@@ -121,6 +179,7 @@ class List extends React.Component {
           />
         </Paper>
         {this.renderTable()}
+        {this.renderError()}
       </div>
     );
   }

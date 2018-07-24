@@ -4,6 +4,9 @@ import classNames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 const styles = theme => ({
   root: {
@@ -51,7 +54,17 @@ let EnhancedTableToolbar = props => {
         )}
       </div>
       <div className={classes.spacer} />
-      <div className={classes.actions} />
+      <div className={classes.actions}>
+        {numSelected > 0 ? (
+          <Tooltip title="Unlock">
+            <IconButton onClick={props.onClickUnlock}>
+              <LockOpenIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          ''
+        )}
+      </div>
     </Toolbar>
   );
 };
