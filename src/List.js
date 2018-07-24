@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import EnhancedTable from './EnhancedTable';
 import path from 'path';
 import util from 'util';
@@ -15,6 +16,12 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
+  },
+  progressWrapper: {
+    textAlign: 'center',
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   },
 });
 
@@ -30,7 +37,7 @@ class List extends React.Component {
     super(props);
 
     this.state = {
-      data: [],
+      data: null,
       gitUserName: '',
       showOtherPeoples: false,
       workDir: path.resolve(this.props.workDir),
@@ -70,15 +77,30 @@ class List extends React.Component {
   onChangeShowOtherPeoples = e => {
     const showOtherPeoples = e.target.checked;
     this.setState({
-      data: [],
+      data: null,
       showOtherPeoples,
     });
     this.refreshData(this.state.workDir, showOtherPeoples);
   };
 
-  render() {
+  renderTable() {
     const { classes } = this.props;
     const { data, workDir } = this.state;
+
+    if (data === null) {
+      return (
+        <div className={classes.progressWrapper}>
+          <CircularProgress className={classes.progress} />
+        </div>
+      );
+    }
+    return (
+      <EnhancedTable workDir={workDir} columnData={columnData} data={data} />
+    );
+  }
+
+  render() {
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -93,7 +115,7 @@ class List extends React.Component {
             label="Show others"
           />
         </Paper>
-        <EnhancedTable workDir={workDir} columnData={columnData} data={data} />
+        {this.renderTable()}
       </div>
     );
   }
