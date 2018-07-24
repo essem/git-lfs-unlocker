@@ -12,6 +12,7 @@ function createWindow() {
   // and load the index.html of the app.
   if (process.env.NODE_ENV == 'production') {
     mainWindow.loadFile('build/index.html');
+    mainWindow.setMenu(null);
   } else {
     mainWindow.loadURL('http://localhost:3000');
   }

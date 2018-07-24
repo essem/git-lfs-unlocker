@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import List from './List';
 
 const styles = {
   root: {
@@ -41,13 +42,12 @@ class App extends React.Component {
               color="inherit"
               className={classes.flex}
             >
-              Electron Boilerplate
+              Git LFS Unlocker
             </Typography>
           </Toolbar>
         </AppBar>
         <div className={classes.content}>
-          We are using Node.js {process.versions.node}, Chromium{' '}
-          {process.versions.chrome}, and Electron {process.versions.electron}.
+          <List workDir="." />
         </div>
       </div>
     );
