@@ -46,7 +46,7 @@ class EnhancedTable extends React.Component {
 
     this.state = {
       order: 'asc',
-      orderBy: 'id',
+      orderBy: props.defaultOrderBy,
       selected: [],
     };
   }

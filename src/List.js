@@ -95,7 +95,12 @@ class List extends React.Component {
       );
     }
     return (
-      <EnhancedTable workDir={workDir} columnData={columnData} data={data} />
+      <EnhancedTable
+        workDir={workDir}
+        columnData={columnData}
+        data={data}
+        defaultOrderBy="path"
+      />
     );
   }
 
