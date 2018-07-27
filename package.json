@@ -5,8 +5,8 @@
   "main": "main.js",
   "homepage": ".",
   "scripts": {
-    "start": "npm run build && NODE_ENV=production npm run electron",
-    "dev": "concurrently \"npm:react\" \"sleep 2 && npm run electron\"",
+    "start": "npm run build && npm run electron",
+    "dev": "concurrently \"npm:react\" \"sleep 2 && DEV_SERVER=\"http://localhost:3000\" npm run electron\"",
     "electron": "electron .",
     "react": "BROWSER=none node scripts/start.js",
     "build": "node scripts/build.js",
