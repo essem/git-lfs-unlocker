@@ -8,6 +8,8 @@
 
 # production
 /build
+/package
+app.asar
 
 # misc
 .DS_Store
