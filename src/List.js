@@ -26,7 +26,11 @@ const styles = theme => ({
   progressWrapper: {
     textAlign: 'center',
   },
+  vmiddle: {
+    verticalAlign: 'middle',
+  },
   progress: {
+    verticalAlign: 'middle',
     margin: theme.spacing.unit * 2,
   },
 });
@@ -47,6 +51,7 @@ class List extends React.Component {
       gitUserName: '',
       showOtherPeoples: false,
       workDir: path.resolve(this.props.workDir),
+      showUnlockingProgress: false,
       err: null,
     };
 
@@ -91,6 +96,7 @@ class List extends React.Component {
   };
 
   handleClickUnlock = selected => {
+    this.setState({ showUnlockingProgress: true });
     (async () => {
       try {
         for (const id of selected) {
@@ -98,10 +104,10 @@ class List extends React.Component {
             cwd: this.state.workDir,
           });
         }
-        this.setState({ data: null });
+        this.setState({ showUnlockingProgress: false, data: null });
         this.refreshData(this.state.workDir, this.state.showOtherPeoples);
       } catch (err) {
-        this.setState({ err: err.toString() });
+        this.setState({ showUnlockingProgress: false, err: err.toString() });
       }
     })();
   };
@@ -130,6 +136,20 @@ class List extends React.Component {
         defaultOrderBy="path"
         onClickUnlock={this.handleClickUnlock}
       />
+    );
+  }
+
+  renderUnlockingProgress() {
+    const { classes } = this.props;
+    const { showUnlockingProgress } = this.state;
+
+    return (
+      <Dialog open={showUnlockingProgress}>
+        <DialogContent>
+          <CircularProgress className={classes.progress} />
+          <span className={classes.vmiddle}>Unlocking in progress...</span>
+        </DialogContent>
+      </Dialog>
     );
   }
 
@@ -179,6 +199,7 @@ class List extends React.Component {
           />
         </Paper>
         {this.renderTable()}
+        {this.renderUnlockingProgress()}
         {this.renderError()}
       </div>
     );
