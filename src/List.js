@@ -19,9 +19,16 @@ const execAsync = util.promisify(exec);
 
 const styles = theme => ({
   root: {
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+  },
+  paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
+  },
+  buttons: {
+    paddingTop: theme.spacing.unit * 2,
   },
   progressWrapper: {
     textAlign: 'center',
@@ -93,6 +100,11 @@ class List extends React.Component {
       showOtherPeoples,
     });
     this.refreshData(this.state.workDir, showOtherPeoples);
+  };
+
+  onClickRefresh = e => {
+    this.setState({ data: null });
+    this.refreshData(this.state.workDir, this.state.showOtherPeoples);
   };
 
   handleClickUnlock = selected => {
@@ -187,16 +199,28 @@ class List extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Paper className={classes.root} elevation={1}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={this.state.showOtherPeoples}
-                onChange={this.onChangeShowOtherPeoples}
-              />
-            }
-            label="Show others"
-          />
+        <Paper className={classes.paper} elevation={1}>
+          <div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.showOtherPeoples}
+                  onChange={this.onChangeShowOtherPeoples}
+                />
+              }
+              label="Show others"
+            />
+          </div>
+          <div className={classes.buttons}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={this.onClickRefresh}
+            >
+              Refresh
+            </Button>
+          </div>
         </Paper>
         {this.renderTable()}
         {this.renderUnlockingProgress()}
