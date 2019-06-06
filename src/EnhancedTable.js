@@ -51,12 +51,6 @@ class EnhancedTable extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data !== this.state.data) {
-      this.setState({ selected: [] });
-    }
-  }
-
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';

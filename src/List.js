@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -58,6 +59,7 @@ class List extends React.Component {
       data: null,
       gitUserName: '',
       showOtherPeoples: false,
+      forceUnlock: false,
       workDir: path.resolve(this.props.workDir),
       showUnlockingProgress: false,
       err: null,
@@ -108,12 +110,18 @@ class List extends React.Component {
     this.refreshData(this.state.workDir, this.state.showOtherPeoples);
   };
 
+  onChangeForceUnlock = e => {
+    const forceUnlock = e.target.checked;
+    this.setState({ forceUnlock });
+  };
+
   handleClickUnlock = selected => {
     this.setState({ showUnlockingProgress: true });
     (async () => {
       try {
+        const option = this.state.forceUnlock ? '-f' : '';
         for (const id of selected) {
-          await execAsync(`git lfs unlock --id=${id}`, {
+          await execAsync(`git lfs unlock --id=${id} ${option}`, {
             cwd: this.state.workDir,
           });
         }
@@ -201,7 +209,7 @@ class List extends React.Component {
     return (
       <div className={classes.root}>
         <Paper className={classes.paper} elevation={1}>
-          <div>
+          <FormGroup>
             <FormControlLabel
               control={
                 <Checkbox
@@ -211,7 +219,16 @@ class List extends React.Component {
               }
               label="Show others"
             />
-          </div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.forceUnlock}
+                  onChange={this.onChangeForceUnlock}
+                />
+              }
+              label="Force unlock"
+            />
+          </FormGroup>
           <div className={classes.buttons}>
             <Button
               variant="contained"
