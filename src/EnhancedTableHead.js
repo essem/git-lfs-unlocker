@@ -34,7 +34,7 @@ export default class EnhancedTableHead extends React.Component {
             return (
               <TableCell
                 key={column.id}
-                numeric={column.numeric}
+                align={column.numeric ? 'right' : 'left'}
                 padding={column.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === column.id ? order : false}
               >

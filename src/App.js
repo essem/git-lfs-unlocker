@@ -37,11 +37,7 @@ class App extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant="title"
-              color="inherit"
-              className={classes.flex}
-            >
+            <Typography variant="h6" color="inherit" className={classes.flex}>
               Git LFS Unlocker
             </Typography>
           </Toolbar>

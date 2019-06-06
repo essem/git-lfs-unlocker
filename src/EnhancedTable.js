@@ -12,7 +12,7 @@ import EnhancedTableHead from './EnhancedTableHead';
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
   },
   table: {
     minWidth: 1020,
@@ -142,7 +142,10 @@ class EnhancedTable extends React.Component {
                       <Checkbox checked={isSelected} />
                     </TableCell>
                     {columnData.map(c => (
-                      <TableCell key={c.id} numeric={c.numeric}>
+                      <TableCell
+                        key={c.id}
+                        align={c.numeric ? 'right' : 'left'}
+                      >
                         {n[c.id]}
                       </TableCell>
                     ))}

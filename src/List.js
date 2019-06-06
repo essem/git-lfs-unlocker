@@ -11,24 +11,25 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EnhancedTable from './EnhancedTable';
-import path from 'path';
 import util from 'util';
-import { exec } from 'child_process';
-console.log('exec', exec);
+
+const electron = window.require('electron');
+const path = electron.remote.require('path');
+const { exec } = electron.remote.require('child_process');
 const execAsync = util.promisify(exec);
 
 const styles = theme => ({
   root: {
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   paper: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   buttons: {
-    paddingTop: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
   },
   progressWrapper: {
     textAlign: 'center',
@@ -38,7 +39,7 @@ const styles = theme => ({
   },
   progress: {
     verticalAlign: 'middle',
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
   },
 });
 
