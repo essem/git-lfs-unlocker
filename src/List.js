@@ -14,7 +14,7 @@ import EnhancedTable from './EnhancedTable';
 import path from 'path';
 import util from 'util';
 import { exec } from 'child_process';
-
+console.log('exec', exec);
 const execAsync = util.promisify(exec);
 
 const styles = theme => ({
