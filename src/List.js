@@ -65,10 +65,10 @@ class List extends React.Component {
       err: null,
     };
 
-    this.refreshData(this.state.workDir, this.state.showOtherPeoples);
+    this.refreshData(this.state.workDir);
   }
 
-  async refreshData(cwd, showOtherPeoples) {
+  async refreshData(cwd) {
     try {
       const stdout = await execAsync('git config user.name', { cwd });
       const gitUserName = stdout.trim();
@@ -81,12 +81,6 @@ class List extends React.Component {
         lockedAt: n.locked_at,
       }));
 
-      if (!showOtherPeoples) {
-        data = data.filter(n => {
-          return n.owner === gitUserName;
-        });
-      }
-
       this.setState({
         gitUserName,
         data,
@@ -98,21 +92,17 @@ class List extends React.Component {
 
   onChangeShowOtherPeoples = e => {
     const showOtherPeoples = e.target.checked;
-    this.setState({
-      data: null,
-      showOtherPeoples,
-    });
-    this.refreshData(this.state.workDir, showOtherPeoples);
-  };
-
-  onClickRefresh = e => {
-    this.setState({ data: null });
-    this.refreshData(this.state.workDir, this.state.showOtherPeoples);
+    this.setState({ showOtherPeoples });
   };
 
   onChangeForceUnlock = e => {
     const forceUnlock = e.target.checked;
     this.setState({ forceUnlock });
+  };
+
+  onClickRefresh = e => {
+    this.setState({ data: null });
+    this.refreshData(this.state.workDir);
   };
 
   handleClickUnlock = selected => {
@@ -126,7 +116,7 @@ class List extends React.Component {
           });
         }
         this.setState({ showUnlockingProgress: false, data: null });
-        this.refreshData(this.state.workDir, this.state.showOtherPeoples);
+        this.refreshData(this.state.workDir);
       } catch (err) {
         this.setState({ showUnlockingProgress: false, err: err.toString() });
       }
@@ -139,7 +129,8 @@ class List extends React.Component {
 
   renderTable() {
     const { classes } = this.props;
-    const { data, workDir } = this.state;
+    const { workDir, gitUserName, showOtherPeoples } = this.state;
+    let data = this.state.data;
 
     if (data === null) {
       return (
@@ -147,6 +138,12 @@ class List extends React.Component {
           <CircularProgress className={classes.progress} />
         </div>
       );
+    }
+
+    if (!showOtherPeoples) {
+      data = data.filter(n => {
+        return n.owner === gitUserName;
+      });
     }
 
     return (
