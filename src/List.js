@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -60,6 +61,7 @@ class List extends React.Component {
       gitUserName: '',
       showOtherPeoples: false,
       forceUnlock: false,
+      filter: '',
       workDir: path.resolve(this.props.workDir),
       showUnlockingProgress: false,
       err: null,
@@ -100,6 +102,11 @@ class List extends React.Component {
     this.setState({ forceUnlock });
   };
 
+  onChangeFilter = e => {
+    const filter = e.target.value;
+    this.setState({ filter });
+  };
+
   onClickRefresh = e => {
     this.setState({ data: null });
     this.refreshData(this.state.workDir);
@@ -129,7 +136,7 @@ class List extends React.Component {
 
   renderTable() {
     const { classes } = this.props;
-    const { workDir, gitUserName, showOtherPeoples } = this.state;
+    const { workDir, gitUserName, showOtherPeoples, filter } = this.state;
     let data = this.state.data;
 
     if (data === null) {
@@ -143,6 +150,12 @@ class List extends React.Component {
     if (!showOtherPeoples) {
       data = data.filter(n => {
         return n.owner === gitUserName;
+      });
+    }
+
+    if (filter != '') {
+      data = data.filter(n => {
+        return n.path.includes(filter);
       });
     }
 
@@ -224,6 +237,12 @@ class List extends React.Component {
                 />
               }
               label="Force unlock"
+            />
+            <Input
+              placeholder="Enter a string to filter the list"
+              className={classes.input}
+              value={this.state.filter}
+              onChange={this.onChangeFilter}
             />
           </FormGroup>
           <div className={classes.buttons}>
