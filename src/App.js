@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -28,23 +28,25 @@ class App extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.flex}>
-              Git LFS Unlocker
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <div className={classes.content}>
-          <List workDir="." />
-        </div>
+        <Suspense fallback="loading">
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="Menu"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" className={classes.flex}>
+                Git LFS Unlocker
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <div className={classes.content}>
+            <List workDir="." />
+          </div>
+        </Suspense>
       </div>
     );
   }

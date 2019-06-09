@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -35,6 +36,7 @@ const styles = theme => ({
 
 let EnhancedTableToolbar = props => {
   const { title, numSelected, classes } = props;
+  const { t } = useTranslation();
 
   return (
     <Toolbar
@@ -45,7 +47,7 @@ let EnhancedTableToolbar = props => {
       <div className={classes.title}>
         {numSelected > 0 ? (
           <Typography color="inherit" variant="subtitle1">
-            {numSelected} selected
+            {t('toolbar.selected', { number: numSelected })}
           </Typography>
         ) : (
           <Typography variant="subtitle1" id="tableTitle">
@@ -56,7 +58,7 @@ let EnhancedTableToolbar = props => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
-          <Tooltip title="Unlock">
+          <Tooltip title={t('toolbar.unlock')}>
             <IconButton onClick={props.onClickUnlock}>
               <LockOpenIcon />
             </IconButton>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 import Paper from '@material-ui/core/Paper';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -45,16 +46,33 @@ const styles = theme => ({
   },
 });
 
-const columnData = [
-  { id: 'id', numeric: true, disablePadding: false, label: 'Id' },
-  { id: 'owner', numeric: false, disablePadding: false, label: 'Owner' },
-  { id: 'path', numeric: false, disablePadding: false, label: 'Path' },
-  { id: 'lockedAt', numeric: false, disablePadding: false, label: 'Locked At' },
-];
-
 class List extends React.Component {
   constructor(props) {
     super(props);
+
+    const { t } = props;
+
+    this.columnData = [
+      { id: 'id', numeric: true, disablePadding: false, label: t('list.id') },
+      {
+        id: 'owner',
+        numeric: false,
+        disablePadding: false,
+        label: t('list.owner'),
+      },
+      {
+        id: 'path',
+        numeric: false,
+        disablePadding: false,
+        label: t('list.path'),
+      },
+      {
+        id: 'lockedAt',
+        numeric: false,
+        disablePadding: false,
+        label: t('list.lockedAt'),
+      },
+    ];
 
     this.state = {
       data: null,
@@ -153,7 +171,7 @@ class List extends React.Component {
       });
     }
 
-    if (filter != '') {
+    if (filter !== '') {
       data = data.filter(n => {
         return n.path.includes(filter);
       });
@@ -162,7 +180,7 @@ class List extends React.Component {
     return (
       <EnhancedTable
         workDir={workDir}
-        columnData={columnData}
+        columnData={this.columnData}
         data={data}
         defaultOrderBy="path"
         onClickUnlock={this.handleClickUnlock}
@@ -171,14 +189,14 @@ class List extends React.Component {
   }
 
   renderUnlockingProgress() {
-    const { classes } = this.props;
+    const { t, classes } = this.props;
     const { showUnlockingProgress } = this.state;
 
     return (
       <Dialog open={showUnlockingProgress}>
         <DialogContent>
           <CircularProgress className={classes.progress} />
-          <span className={classes.vmiddle}>Unlocking in progress...</span>
+          <span className={classes.vmiddle}>{t('dialog.unlocking')}</span>
         </DialogContent>
       </Dialog>
     );
@@ -189,6 +207,8 @@ class List extends React.Component {
       return '';
     }
 
+    const { t } = this.props;
+
     return (
       <Dialog
         open={true}
@@ -197,7 +217,7 @@ class List extends React.Component {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {'Failed to unlock file(s)'}
+          {t('dialog.error.title')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -206,7 +226,7 @@ class List extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary" autoFocus>
-            CLOSE
+            {t('dialog.close')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -214,7 +234,7 @@ class List extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { t, classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -227,7 +247,7 @@ class List extends React.Component {
                   onChange={this.onChangeShowOtherPeoples}
                 />
               }
-              label="Show others"
+              label={t('option.showOthers')}
             />
             <FormControlLabel
               control={
@@ -236,10 +256,10 @@ class List extends React.Component {
                   onChange={this.onChangeForceUnlock}
                 />
               }
-              label="Force unlock"
+              label={t('option.forceUnlock')}
             />
             <Input
-              placeholder="Enter a string to filter the list"
+              placeholder={t('option.pathFilter')}
               className={classes.input}
               value={this.state.filter}
               onChange={this.onChangeFilter}
@@ -252,7 +272,7 @@ class List extends React.Component {
               className={classes.button}
               onClick={this.onClickRefresh}
             >
-              Refresh
+              {t('option.refresh')}
             </Button>
           </div>
         </Paper>
@@ -264,4 +284,4 @@ class List extends React.Component {
   }
 }
 
-export default withStyles(styles)(List);
+export default withTranslation()(withStyles(styles)(List));
