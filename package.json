@@ -20,7 +20,7 @@
     "asar": "^2.0.1",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.0",
-    "electron": "^5.0.2",
+    "electron": "^15.5.5",
     "i18next": "^17.0.3",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^3.0.0",
